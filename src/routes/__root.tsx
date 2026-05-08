@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Volume Hand" },
+      { name: "description", content: "Control your system volume in real-time using hand gestures detected by your webcam." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Volume Hand" },
+      { property: "og:description", content: "Control your system volume in real-time using hand gestures detected by your webcam." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Volume Hand" },
+      { name: "twitter:description", content: "Control your system volume in real-time using hand gestures detected by your webcam." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/72821cee-c0e9-425b-8cd0-dc9916878372/id-preview-072d6d3f--3c606852-86a7-4d16-9c2c-e8fbed518484.lovable.app-1778238714398.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/72821cee-c0e9-425b-8cd0-dc9916878372/id-preview-072d6d3f--3c606852-86a7-4d16-9c2c-e8fbed518484.lovable.app-1778238714398.png" },
     ],
     links: [
       {
