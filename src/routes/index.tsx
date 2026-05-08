@@ -182,9 +182,12 @@ function Index() {
     setErrorMsg(null);
     setState("loading");
     try {
-      // Dynamic imports — MediaPipe is browser-only
+      // Dynamic imports — MediaPipe is browser-only.
+      // The package sets `Hands` as a global side-effect; the ESM export may be undefined.
       const handsMod: any = await import("@mediapipe/hands");
-      const HandsCtor = handsMod.Hands;
+      const HandsCtor =
+        handsMod.Hands ?? handsMod.default?.Hands ?? (window as any).Hands;
+      if (!HandsCtor) throw new Error("Failed to load MediaPipe Hands library.");
 
       // Init Hands solution; load assets from CDN to avoid bundler asset path issues
       const hands = new HandsCtor({
