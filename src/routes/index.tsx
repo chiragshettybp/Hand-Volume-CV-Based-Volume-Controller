@@ -270,7 +270,6 @@ function Index() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <div className="max-w-7xl mx-auto px-6 py-10 lg:py-14">
       {/* NAVBAR */}
       <nav className="fixed top-0 inset-x-0 z-50 navbar-blur border-b border-[#1F1F1F]">
         <div className="max-w-[1200px] mx-auto h-[60px] px-5 flex items-center justify-between">
