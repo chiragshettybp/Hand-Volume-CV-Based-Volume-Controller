@@ -271,78 +271,102 @@ function Index() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 py-10 lg:py-14">
+      {/* NAVBAR */}
+      <nav className="fixed top-0 inset-x-0 z-50 navbar-blur border-b border-[#1F1F1F]">
+        <div className="max-w-[1200px] mx-auto h-[60px] px-5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white text-black flex items-center justify-center">
+              <Hand className="w-4 h-4" />
+            </div>
+            <span className="font-semibold tracking-tight">GestureVol</span>
+          </div>
+          <div className="hidden md:flex items-center gap-7 text-sm font-medium text-[#A1A1A1]">
+            <a href="#demo" className="hover:text-white transition-colors">Demo</a>
+            <a href="#how" className="hover:text-white transition-colors">How it works</a>
+            <a href="#stack" className="hover:text-white transition-colors">Stack</a>
+          </div>
+          <button
+            onClick={startCamera}
+            disabled={active || state === "loading"}
+            className="bg-white text-black font-semibold text-sm px-4 py-2 rounded-full hover:opacity-90 transition disabled:opacity-40"
+          >
+            {active ? "Running" : "Launch"}
+          </button>
+        </div>
+      </nav>
+
+      <div className="max-w-[1200px] mx-auto px-5 pt-[140px] pb-24">
         {/* HERO */}
         <header className="text-center animate-float-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs uppercase tracking-widest text-muted-foreground mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            Live Computer Vision Demo
+          <div className="pill mx-auto">
+            <span className="live-dot" />
+            <span>Live computer vision demo</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <span className="text-gradient">Hand Gesture</span>
-            <br />
-            Volume Controller
+          <h1
+            className="heading-tight font-bold mt-7 mx-auto max-w-4xl"
+            style={{ fontSize: "clamp(38px, 7vw, 72px)" }}
+          >
+            Control volume<br />
+            <span className="text-[#A1A1A1]">with your hand.</span>
           </h1>
-          <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Control volume using thumb and index finger distance in real time — powered by
-            MediaPipe Hands and your webcam.
+          <p className="mt-6 text-[15px] md:text-base text-[#A1A1A1] max-w-xl mx-auto leading-relaxed">
+            A real-time hand gesture controller. Pinch and stretch your fingers to
+            adjust volume — powered by MediaPipe Hands and your webcam.
           </p>
-          <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
+          <div className="mt-9 flex items-center justify-center gap-3 flex-wrap">
             <button
               onClick={startCamera}
               disabled={active || state === "loading"}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-hero text-primary-foreground font-semibold neon-glow transition hover:scale-[1.03] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="btn-primary inline-flex items-center gap-2"
             >
-              <Camera className="w-5 h-5" />
+              <Camera className="w-4 h-4" />
               {state === "loading" ? "Starting…" : "Start Camera"}
             </button>
             <button
               onClick={stopCamera}
               disabled={!active}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass font-medium transition hover:bg-secondary/50 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="btn-secondary inline-flex items-center gap-2"
             >
-              <CameraOff className="w-5 h-5" />
-              Stop Camera
+              <CameraOff className="w-4 h-4" />
+              Stop
             </button>
           </div>
           {errorMsg && (
-            <p className="mt-4 text-sm text-destructive">{errorMsg}</p>
+            <p className="mt-5 text-sm text-destructive">{errorMsg}</p>
           )}
         </header>
 
-        {/* MAIN PANELS */}
-        <section className="mt-12 grid lg:grid-cols-[1fr_360px] gap-6">
-          {/* CAMERA PANEL */}
-          <div className="glass rounded-2xl p-4 relative overflow-hidden animate-float-up">
-            <div className="flex items-center justify-between mb-3 px-2">
-              <div className="flex items-center gap-2 text-sm">
+        {/* DEMO PANEL */}
+        <section id="demo" className="mt-20 grid lg:grid-cols-[1fr_360px] gap-5">
+          {/* CAMERA WINDOW */}
+          <div
+            className="panel overflow-hidden"
+            style={{ borderRadius: 18, boxShadow: "var(--shadow-panel)" }}
+          >
+            <div className="flex items-center justify-between px-4 h-11 border-b border-[#1F1F1F]">
+              <div className="flex items-center gap-2.5 text-xs">
                 <span
-                  className={`w-2 h-2 rounded-full ${
+                  className={
                     state === "tracking"
-                      ? "bg-success animate-pulse"
-                      : active
-                      ? "bg-warning animate-pulse"
-                      : "bg-muted-foreground/50"
-                  }`}
+                      ? "live-dot"
+                      : "w-2 h-2 rounded-full bg-[#2A2A2A]"
+                  }
                 />
-                <span className="text-muted-foreground">
-                  {state === "loading" && "Initializing model…"}
-                  {state === "no-hand" && "No hand detected"}
-                  {state === "tracking" && "Tracking hand"}
-                  {state === "denied" && "Camera denied"}
-                  {state === "idle" && "Camera off"}
+                <span className="text-[#A1A1A1] mono uppercase tracking-wider">
+                  {state === "loading" && "initializing"}
+                  {state === "no-hand" && "awaiting hand"}
+                  {state === "tracking" && "tracking"}
+                  {state === "denied" && "denied"}
+                  {state === "idle" && "offline"}
                 </span>
               </div>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5" /> {fps} FPS
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Eye className="w-3.5 h-3.5" /> {confidence}%
-                </span>
+              <div className="flex items-center gap-4 text-[11px] text-[#6B6B6B] mono">
+                <span>{fps} FPS</span>
+                <span>CONF {confidence}%</span>
               </div>
             </div>
 
-            <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-border">
+            <div className="relative aspect-video w-full bg-black">
               <video
                 ref={videoRef}
                 playsInline
@@ -356,147 +380,205 @@ function Index() {
               />
 
               {!active && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-black/40">
-                  <div className="relative mb-4">
-                    <Hand className="w-14 h-14 text-primary" />
-                    <span className="absolute inset-0 rounded-full border border-primary animate-pulse-ring" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-black">
+                  <div className="icon-box mb-4" style={{ width: 56, height: 56 }}>
+                    <Hand className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-lg font-medium">Camera is off</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click <span className="text-primary">Start Camera</span> to begin tracking
+                  <p className="text-base font-semibold">Camera offline</p>
+                  <p className="text-sm text-[#A1A1A1] mt-1.5">
+                    Press <span className="text-white">Start Camera</span> to begin
+                    <span className="cursor-blink ml-1.5" />
                   </p>
                 </div>
               )}
 
               {active && state === "loading" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                  <div className="flex items-center gap-3">
-                    <span className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                    <p>Loading hand tracking model…</p>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/80">
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="live-dot" />
+                    <span className="mono text-[#A1A1A1]">loading model…</span>
                   </div>
                 </div>
               )}
             </div>
+
+            <div className="flex items-center justify-between px-4 h-12 border-t border-[#1F1F1F]">
+              <span className="text-[11px] mono text-[#6B6B6B] uppercase tracking-wider">
+                MediaPipe · 21 landmarks
+              </span>
+              <button
+                onClick={active ? stopCamera : startCamera}
+                disabled={state === "loading"}
+                className="text-xs font-semibold px-3 py-1.5 rounded-md bg-white text-black hover:opacity-90 transition disabled:opacity-40"
+              >
+                {active ? "Stop" : "Start"}
+              </button>
+            </div>
           </div>
 
           {/* VOLUME PANEL */}
-          <div className="glass rounded-2xl p-6 flex flex-col animate-float-up">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Volume</h2>
-              <span
-                className="text-xs font-mono uppercase tracking-wider px-2 py-1 rounded-md"
-                style={{
-                  background: `color-mix(in oklab, ${volColor} 20%, transparent)`,
-                  color: volColor,
-                }}
-              >
-                {volLabel}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-6">
-              {/* Vertical bar */}
-              <div className="relative w-14 h-64 rounded-full bg-secondary/40 overflow-hidden border border-border">
-                <div
-                  className="absolute bottom-0 left-0 right-0 bg-gradient-volume transition-[height] duration-100 ease-out"
-                  style={{ height: `${volume}%` }}
-                />
-                {/* Tick marks */}
-                {[25, 50, 75].map((t) => (
+          <div
+            className="panel p-5 flex flex-col"
+            style={{ borderRadius: 18, boxShadow: "var(--shadow-panel)" }}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-[#A1A1A1]">
+                Volume
+              </h2>
+              <div className="flex items-center gap-1.5">
+                {levels.map((l) => (
                   <span
-                    key={t}
-                    className="absolute left-0 right-0 h-px bg-foreground/15"
-                    style={{ bottom: `${t}%` }}
-                  />
+                    key={l}
+                    className={`chip ${l === volLabel && active ? "chip-active" : ""}`}
+                  >
+                    {l}
+                  </span>
                 ))}
               </div>
+            </div>
 
-              <div className="flex-1">
-                <div className="text-5xl font-bold tabular-nums text-gradient">
-                  {Math.round(volume)}%
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">Current level</p>
+            <div className="code-box p-5">
+              <div
+                className="font-bold tabular-nums text-white leading-none"
+                style={{ fontSize: "clamp(48px, 7vw, 64px)", letterSpacing: "-0.03em" }}
+              >
+                {Math.round(volume)}
+                <span className="text-[#6B6B6B] text-3xl font-medium ml-1">%</span>
+              </div>
+              <p className="text-[11px] text-[#6B6B6B] mt-2 mono uppercase tracking-wider">
+                Current level
+              </p>
 
-                <div className="mt-6 space-y-2 text-sm">
-                  <Row label="Distance" value={distance.toFixed(3)} />
-                  <Row
-                    label="Gesture"
-                    value={
-                      state === "tracking"
-                        ? volume > 1
-                          ? "Volume changing"
-                          : "Tracking"
-                        : state === "no-hand"
-                        ? "No hand"
-                        : "—"
-                    }
-                  />
-                  <Row label="FPS" value={String(fps)} />
-                </div>
+              <div className="mt-5 h-2 w-full rounded-full bg-[#1F1F1F] overflow-hidden">
+                <div
+                  className="h-full bg-white transition-[width] duration-100 ease-out"
+                  style={{ width: `${volume}%` }}
+                />
               </div>
             </div>
 
-            <div className="mt-6 text-xs text-muted-foreground leading-relaxed border-t border-border pt-4">
-              Browsers cannot directly change system volume from a webpage. This bar simulates
-              system volume visually based on your gesture.
+            <div className="mt-5 space-y-3 text-sm">
+              <Row label="Distance" value={distance.toFixed(3)} />
+              <Row
+                label="Gesture"
+                value={
+                  state === "tracking"
+                    ? volume > 1
+                      ? "Adjusting"
+                      : "Tracking"
+                    : state === "no-hand"
+                    ? "No hand"
+                    : "—"
+                }
+              />
+              <Row label="FPS" value={String(fps)} />
+              <Row label="Confidence" value={`${confidence}%`} />
             </div>
+
+            <p className="mt-5 text-[11px] text-[#6B6B6B] leading-relaxed border-t border-[#1F1F1F] pt-4">
+              Browsers can't change system volume directly. This bar simulates
+              system volume based on your gesture.
+            </p>
           </div>
         </section>
 
+        {/* STATS */}
+        <section className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { n: "21", l: "Hand landmarks" },
+            { n: "60", l: "FPS target" },
+            { n: "<50", l: "ms latency" },
+            { n: "0", l: "Server calls" },
+          ].map((s) => (
+            <div key={s.l} className="panel p-6 text-center">
+              <div className="text-3xl md:text-4xl font-bold tracking-tight">{s.n}</div>
+              <div className="text-xs text-[#6B6B6B] mt-2 mono uppercase tracking-wider">
+                {s.l}
+              </div>
+            </div>
+          ))}
+        </section>
+
         {/* HOW IT WORKS */}
-        <section className="mt-16">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center">How it works</h2>
-          <p className="text-center text-muted-foreground mt-2 max-w-xl mx-auto">
-            Closer fingers = lower volume. Farther fingers = higher volume.
-          </p>
-          <div className="mt-8 grid md:grid-cols-3 gap-4">
-            <Step
-              n={1}
-              title="Start your webcam"
-              desc="Grant camera access. The MediaPipe model loads and locks onto your hand."
-              icon={<Camera className="w-5 h-5" />}
-            />
-            <Step
-              n={2}
-              title="Show your hand"
-              desc="Hold one hand in view. Landmarks for thumb (4) and index tip (8) are tracked."
-              icon={<Hand className="w-5 h-5" />}
-            />
-            <Step
-              n={3}
-              title="Pinch or stretch"
-              desc="The Euclidean distance between fingertips is mapped smoothly to a 0–100% scale."
-              icon={<Zap className="w-5 h-5" />}
-            />
+        <section id="how" className="mt-24">
+          <div className="text-center">
+            <div className="pill mx-auto">
+              <span className="live-dot" />
+              <span>Workflow</span>
+            </div>
+            <h2
+              className="heading-tight font-bold mt-6"
+              style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
+            >
+              Three steps.<br />
+              <span className="text-[#A1A1A1]">Zero setup.</span>
+            </h2>
+          </div>
+          <div className="mt-12 grid md:grid-cols-3 gap-4">
+            <Step n={1} title="Start your webcam" desc="Grant camera access. The MediaPipe model loads and locks onto your hand." icon={<Camera className="w-4 h-4" />} />
+            <Step n={2} title="Show your hand" desc="Hold one hand in view. Landmarks for thumb (4) and index tip (8) are tracked." icon={<Hand className="w-4 h-4" />} />
+            <Step n={3} title="Pinch or stretch" desc="The Euclidean distance between fingertips is mapped smoothly to a 0–100% scale." icon={<Zap className="w-4 h-4" />} />
           </div>
         </section>
 
         {/* TECH STACK */}
-        <section className="mt-16">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center">Tech stack</h2>
-          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section id="stack" className="mt-24">
+          <div className="text-center">
+            <h2
+              className="heading-tight font-bold"
+              style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
+            >
+              Built with<br />
+              <span className="text-[#A1A1A1]">a tight stack.</span>
+            </h2>
+          </div>
+          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { t: "OpenCV Concept", d: "Distance-based gesture mapping logic" },
-              { t: "MediaPipe Hands", d: "21-point hand landmark detection" },
-              { t: "Gesture Mapping", d: "Smoothed Euclidean → volume scale" },
-              { t: "Browser Camera API", d: "Live WebRTC video stream" },
+              { t: "OpenCV Concept", d: "Distance-based gesture mapping logic", I: Eye },
+              { t: "MediaPipe Hands", d: "21-point hand landmark detection", I: Hand },
+              { t: "Gesture Mapping", d: "Smoothed Euclidean → volume scale", I: Activity },
+              { t: "Browser Camera API", d: "Live WebRTC video stream", I: Camera },
             ].map((x) => (
-              <div key={x.t} className="glass rounded-xl p-5">
-                <div className="flex items-center gap-2 mb-2 text-primary">
-                  <Cpu className="w-4 h-4" />
-                  <span className="font-medium text-foreground">{x.t}</span>
+              <div key={x.t} className="panel p-5">
+                <div className="icon-box mb-4">
+                  <x.I className="w-4 h-4 text-white" />
                 </div>
-                <p className="text-sm text-muted-foreground">{x.d}</p>
+                <div className="font-semibold text-[15px]">{x.t}</div>
+                <p className="text-sm text-[#A1A1A1] mt-1.5 leading-relaxed">{x.d}</p>
               </div>
             ))}
           </div>
         </section>
-
-        {/* FOOTER */}
-        <footer className="mt-20 text-center text-sm text-muted-foreground">
-          Built with AI + Computer Vision
-        </footer>
       </div>
+
+      {/* FOOTER */}
+      <footer className="border-t border-[#1F1F1F] bg-[#0A0A0A]">
+        <div className="max-w-[1200px] mx-auto px-5 py-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-white text-black flex items-center justify-center">
+                <Hand className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-semibold text-sm">GestureVol</div>
+                <div className="text-xs text-[#6B6B6B]">Real-time hand tracking demo</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-[#A1A1A1]">
+              <a href="#demo" className="hover:text-white transition-colors">Demo</a>
+              <a href="#how" className="hover:text-white transition-colors">How it works</a>
+              <a href="#stack" className="hover:text-white transition-colors">Stack</a>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-[#1F1F1F] flex items-center justify-between text-xs text-[#6B6B6B]">
+            <span>© {new Date().getFullYear()} GestureVol</span>
+            <span className="mono flex items-center gap-2">
+              <span className="live-dot" />
+              all systems live
+            </span>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
@@ -504,8 +586,8 @@ function Index() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-mono">{value}</span>
+      <span className="text-[#A1A1A1]">{label}</span>
+      <span className="mono text-white">{value}</span>
     </div>
   );
 }
@@ -522,15 +604,13 @@ function Step({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="glass rounded-2xl p-6 relative overflow-hidden">
-      <span className="absolute top-3 right-4 text-5xl font-bold text-foreground/5">
+    <div className="panel p-6 relative overflow-hidden">
+      <span className="absolute top-3 right-4 text-5xl font-bold text-white/[0.04] mono">
         0{n}
       </span>
-      <div className="w-10 h-10 rounded-lg bg-gradient-hero flex items-center justify-center text-primary-foreground mb-3">
-        {icon}
-      </div>
-      <h3 className="font-semibold">{title}</h3>
-      <p className="text-sm text-muted-foreground mt-1.5">{desc}</p>
+      <div className="icon-box mb-4">{icon}</div>
+      <h3 className="font-semibold text-[15px]">{title}</h3>
+      <p className="text-sm text-[#A1A1A1] mt-1.5 leading-relaxed">{desc}</p>
     </div>
   );
 }
