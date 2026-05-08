@@ -266,11 +266,10 @@ function Index() {
   useEffect(() => () => stopCamera(), [stopCamera]);
 
   const volLabel = volume <= 30 ? "Low" : volume <= 70 ? "Medium" : "High";
-  const volColor =
-    volume <= 30 ? "var(--neon)" : volume <= 70 ? "var(--accent)" : "var(--success)";
+  const levels: Array<"Low" | "Medium" | "High"> = ["Low", "Medium", "High"];
 
   return (
-    <main className="min-h-screen grid-bg">
+    <main className="min-h-screen bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 py-10 lg:py-14">
         {/* HERO */}
         <header className="text-center animate-float-up">
